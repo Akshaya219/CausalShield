@@ -1,0 +1,9 @@
+[
+  "HTTPS",
+  "ack_flag_number",
+  "psh_flag_number",
+  "rst_flag_number",
+  "rst_count",
+  "Variance",
+  "Duration"
+]

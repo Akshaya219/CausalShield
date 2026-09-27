@@ -1,0 +1,20 @@
+{
+  "mi_features": [
+    "IAT",
+    "urg_count",
+    "rst_count",
+    "Max",
+    "Tot size",
+    "flow_duration",
+    "Duration"
+  ],
+  "mi_scores": {
+    "IAT": 0.292227,
+    "urg_count": 0.18374,
+    "rst_count": 0.179607,
+    "Max": 0.169775,
+    "Tot size": 0.153634,
+    "flow_duration": 0.15002,
+    "Duration": 0.147098
+  }
+}

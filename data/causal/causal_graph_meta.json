@@ -1,0 +1,520 @@
+{
+  "algorithm": "FCI",
+  "pag_not_cpdag": true,
+  "handles_latent_confounders": true,
+  "alpha_used": 0.05,
+  "subset_size": 5000,
+  "original_features": 39,
+  "clean_features": 34,
+  "dropped_constant": [],
+  "dropped_high_corr": [
+    "Number",
+    "Std",
+    "Weight"
+  ],
+  "n_edges_total": 70,
+  "n_bidirected_edges": 47,
+  "n_causal_features": 7,
+  "causal_features": [
+    "Duration",
+    "HTTPS",
+    "Variance",
+    "ack_flag_number",
+    "psh_flag_number",
+    "rst_count",
+    "rst_flag_number"
+  ],
+  "edges": [
+    {
+      "from": "ARP",
+      "to": "IPv",
+      "adj_ij": 2,
+      "adj_ji": 2,
+      "type": "uncertain"
+    },
+    {
+      "from": "AVG",
+      "to": "Magnitue",
+      "adj_ij": -1,
+      "adj_ji": 1,
+      "type": "directed_or_possible_ancestor"
+    },
+    {
+      "from": "AVG",
+      "to": "Max",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "AVG",
+      "to": "Min",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "AVG",
+      "to": "Tot size",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "Covariance",
+      "to": "Magnitue",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "Covariance",
+      "to": "Max",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "Covariance",
+      "to": "Radius",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "Covariance",
+      "to": "Tot sum",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "DNS",
+      "to": "UDP",
+      "adj_ij": 2,
+      "adj_ji": 1,
+      "type": "directed_or_possible_ancestor"
+    },
+    {
+      "from": "Duration",
+      "to": "HTTPS",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "Duration",
+      "to": "ack_flag_number",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "Duration",
+      "to": "syn_count",
+      "adj_ij": 1,
+      "adj_ji": 2,
+      "type": "directed_or_possible_ancestor"
+    },
+    {
+      "from": "Duration",
+      "to": "syn_flag_number",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "Duration",
+      "to": "Attack",
+      "adj_ij": -1,
+      "adj_ji": 1,
+      "type": "directed_or_possible_ancestor"
+    },
+    {
+      "from": "HTTP",
+      "to": "HTTPS",
+      "adj_ij": 2,
+      "adj_ji": 1,
+      "type": "directed_or_possible_ancestor"
+    },
+    {
+      "from": "HTTPS",
+      "to": "Tot size",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "HTTPS",
+      "to": "ack_flag_number",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "HTTPS",
+      "to": "fin_count",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "HTTPS",
+      "to": "rst_count",
+      "adj_ij": 1,
+      "adj_ji": -1,
+      "type": "directed_or_possible_ancestor"
+    },
+    {
+      "from": "HTTPS",
+      "to": "syn_count",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "HTTPS",
+      "to": "Attack",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "Header_Length",
+      "to": "Magnitue",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "Header_Length",
+      "to": "rst_count",
+      "adj_ij": -1,
+      "adj_ji": 1,
+      "type": "directed_or_possible_ancestor"
+    },
+    {
+      "from": "Header_Length",
+      "to": "urg_count",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "IAT",
+      "to": "Min",
+      "adj_ij": 2,
+      "adj_ji": 1,
+      "type": "directed_or_possible_ancestor"
+    },
+    {
+      "from": "IAT",
+      "to": "Tot sum",
+      "adj_ij": 2,
+      "adj_ji": 1,
+      "type": "directed_or_possible_ancestor"
+    },
+    {
+      "from": "IAT",
+      "to": "Variance",
+      "adj_ij": 2,
+      "adj_ji": 1,
+      "type": "directed_or_possible_ancestor"
+    },
+    {
+      "from": "ICMP",
+      "to": "Protocol Type",
+      "adj_ij": -1,
+      "adj_ji": 1,
+      "type": "directed_or_possible_ancestor"
+    },
+    {
+      "from": "ICMP",
+      "to": "TCP",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "ICMP",
+      "to": "UDP",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "ICMP",
+      "to": "Variance",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "Magnitue",
+      "to": "Tot size",
+      "adj_ij": 1,
+      "adj_ji": -1,
+      "type": "directed_or_possible_ancestor"
+    },
+    {
+      "from": "Magnitue",
+      "to": "Tot sum",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "Magnitue",
+      "to": "rst_flag_number",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "Max",
+      "to": "Radius",
+      "adj_ij": -1,
+      "adj_ji": 1,
+      "type": "directed_or_possible_ancestor"
+    },
+    {
+      "from": "Max",
+      "to": "Tot sum",
+      "adj_ij": -1,
+      "adj_ji": 1,
+      "type": "directed_or_possible_ancestor"
+    },
+    {
+      "from": "Max",
+      "to": "Variance",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "Min",
+      "to": "Protocol Type",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "Min",
+      "to": "Radius",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "Protocol Type",
+      "to": "TCP",
+      "adj_ij": -1,
+      "adj_ji": 1,
+      "type": "directed_or_possible_ancestor"
+    },
+    {
+      "from": "Protocol Type",
+      "to": "Variance",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "Radius",
+      "to": "Variance",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "Radius",
+      "to": "ack_flag_number",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "Rate",
+      "to": "fin_flag_number",
+      "adj_ij": 2,
+      "adj_ji": 1,
+      "type": "directed_or_possible_ancestor"
+    },
+    {
+      "from": "TCP",
+      "to": "UDP",
+      "adj_ij": 1,
+      "adj_ji": -1,
+      "type": "directed_or_possible_ancestor"
+    },
+    {
+      "from": "TCP",
+      "to": "ack_flag_number",
+      "adj_ij": -1,
+      "adj_ji": 1,
+      "type": "directed_or_possible_ancestor"
+    },
+    {
+      "from": "Tot size",
+      "to": "Tot sum",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "Variance",
+      "to": "ack_flag_number",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "Variance",
+      "to": "fin_flag_number",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "Variance",
+      "to": "flow_duration",
+      "adj_ij": 1,
+      "adj_ji": 2,
+      "type": "directed_or_possible_ancestor"
+    },
+    {
+      "from": "Variance",
+      "to": "Attack",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "ack_count",
+      "to": "fin_count",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "ack_count",
+      "to": "fin_flag_number",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "ack_count",
+      "to": "psh_flag_number",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "ack_count",
+      "to": "syn_flag_number",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "ack_flag_number",
+      "to": "fin_flag_number",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "ack_flag_number",
+      "to": "psh_flag_number",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "ack_flag_number",
+      "to": "rst_count",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "ack_flag_number",
+      "to": "syn_flag_number",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "ack_flag_number",
+      "to": "Attack",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "ece_flag_number",
+      "to": "syn_flag_number",
+      "adj_ij": 2,
+      "adj_ji": 1,
+      "type": "directed_or_possible_ancestor"
+    },
+    {
+      "from": "fin_count",
+      "to": "rst_flag_number",
+      "adj_ij": 1,
+      "adj_ji": -1,
+      "type": "directed_or_possible_ancestor"
+    },
+    {
+      "from": "fin_flag_number",
+      "to": "rst_flag_number",
+      "adj_ij": 1,
+      "adj_ji": -1,
+      "type": "directed_or_possible_ancestor"
+    },
+    {
+      "from": "psh_flag_number",
+      "to": "urg_count",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "psh_flag_number",
+      "to": "Attack",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "rst_count",
+      "to": "urg_count",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "rst_count",
+      "to": "Attack",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "rst_flag_number",
+      "to": "Attack",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    },
+    {
+      "from": "syn_count",
+      "to": "syn_flag_number",
+      "adj_ij": 1,
+      "adj_ji": 1,
+      "type": "bidirected_latent_confounder"
+    }
+  ],
+  "elapsed_seconds": 31.74
+}

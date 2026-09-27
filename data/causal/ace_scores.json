@@ -1,0 +1,51 @@
+{
+  "HTTPS": {
+    "ace": 0.84115,
+    "abs_ace": 0.84115,
+    "method": "naive",
+    "confounders": [],
+    "median_split": 0.0
+  },
+  "ack_flag_number": {
+    "ace": 0.84115,
+    "abs_ace": 0.84115,
+    "method": "naive",
+    "confounders": [],
+    "median_split": 0.0
+  },
+  "psh_flag_number": {
+    "ace": 0.84115,
+    "abs_ace": 0.84115,
+    "method": "naive",
+    "confounders": [],
+    "median_split": 0.0
+  },
+  "rst_flag_number": {
+    "ace": 0.84115,
+    "abs_ace": 0.84115,
+    "method": "naive",
+    "confounders": [],
+    "median_split": 0.0
+  },
+  "rst_count": {
+    "ace": -0.312171,
+    "abs_ace": 0.312171,
+    "method": "naive",
+    "confounders": [],
+    "median_split": 0.5
+  },
+  "Variance": {
+    "ace": -0.284213,
+    "abs_ace": 0.284213,
+    "method": "naive",
+    "confounders": [],
+    "median_split": 0.26
+  },
+  "Duration": {
+    "ace": -0.043041,
+    "abs_ace": 0.043041,
+    "method": "naive",
+    "confounders": [],
+    "median_split": 64.0
+  }
+}

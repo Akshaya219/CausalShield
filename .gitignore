@@ -1,0 +1,32 @@
+# Python environments and caches
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+
+# Local editor and operating-system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Raw datasets and local data exports
+CICIOT23/
+CICIDS2017.csv
+CIC-ToN-IoT-V2.parquet
+data/cross_val/
+
+# Generated processed data and experiment artifacts
+data/processed/
+data/processed1/
+models/
+results/
+outputs/
+
+# Local backups and temporary files
+*.bak
+*_backup.*
+*.tmp
