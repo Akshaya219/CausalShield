@@ -168,10 +168,10 @@ edge_list              = graph_meta.get("edges", [])
 def get_causal_role(feat, causal_feats, edges):
     for e in edges:
         if e["from"] == feat and e["to"] == "Attack":
-            if e["adj_ij"] == 1 and e["adj_ji"] == -1:
+            if e["adj_ij"] == -1 and e["adj_ji"] == 1:
                 return "direct_cause"
         if e["from"] == "Attack" and e["to"] == feat:
-            if e["adj_ij"] == 1 and e["adj_ji"] == -1:
+            if e["adj_ij"] == -1 and e["adj_ji"] == 1:
                 return "effect"
     if feat in causal_feats:
         return "associated"

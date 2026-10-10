@@ -140,12 +140,12 @@ print("\n[5/6] Extracting PAG structure ...")
 
 # causal-learn PAG mark conventions:
 #   adj[i,j] = -1 : tail at i
-#   adj[i,j] =  1 : arrowhead at j
+#   adj[i,j] =  1 : arrowhead at i's end (G[a,b] is the mark at a's end of the a-b edge)
 #   adj[i,j] =  2 : circle mark (uncertainty)
 #
-# i->j  : adj[i,j]=1,  adj[j,i]=-1
+# i->j  : adj[i,j]=-1, adj[j,i]=1
 # i<->j : adj[i,j]=1,  adj[j,i]=1   (bidirected = latent confounder)
-# io->j : adj[i,j]=1,  adj[j,i]=2   (possible ancestor)
+# io->j : adj[i,j]=2,  adj[j,i]=1   (possible ancestor)
 # io-oj : adj[i,j]=2,  adj[j,i]=2   (uncertain)
 
 connected = [
@@ -159,11 +159,11 @@ for f in causal_features:
     i   = feature_names.index(f)
     aij = adj[i, TARGET_IDX]
     aji = adj[TARGET_IDX, i]
-    if   aij == 1 and aji == -1: rel = f"{f} -> Attack  (direct cause)"
-    elif aij == -1 and aji == 1: rel = f"Attack -> {f}  (effect)"
+    if   aij == -1 and aji == 1: rel = f"{f} -> Attack  (direct cause)"
+    elif aij == 1 and aji == -1: rel = f"Attack -> {f}  (effect)"
     elif aij == 1 and aji == 1:  rel = f"{f} <-> Attack  (latent confounder)"
-    elif aij == 1 and aji == 2:  rel = f"{f} o-> Attack  (possible cause)"
-    elif aij == 2 and aji == 1:  rel = f"{f} <-o Attack  (possible effect)"
+    elif aij == 2 and aji == 1:  rel = f"{f} o-> Attack  (possible cause)"
+    elif aij == 1 and aji == 2:  rel = f"{f} <-o Attack  (possible effect)"
     else:                         rel = f"{f} o-o Attack  (uncertain)"
     print(f"        {rel}")
 
@@ -223,8 +223,8 @@ try:
     Gnx = nx.DiGraph()
     Gnx.add_nodes_from(all_names)
     for e in edge_list:
-        if e["adj_ij"] == 1 and e["adj_ji"] == -1: Gnx.add_edge(e["from"], e["to"])
-        elif e["adj_ji"] == 1 and e["adj_ij"] == -1: Gnx.add_edge(e["to"], e["from"])
+        if e["adj_ij"] == -1 and e["adj_ji"] == 1: Gnx.add_edge(e["from"], e["to"])
+        elif e["adj_ji"] == -1 and e["adj_ij"] == 1: Gnx.add_edge(e["to"], e["from"])
         else: Gnx.add_edge(e["from"], e["to"])
 
     colors = ["#e74c3c" if n == "Attack" else "#f39c12" if n in causal_features else "#95a5a6"

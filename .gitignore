@@ -29,4 +29,5 @@ outputs/
 # Local backups and temporary files
 *.bak
 *_backup.*
+data/causal_backup_before_decode_fix/
 *.tmp
