@@ -18,6 +18,7 @@ CICIOT23/
 CICIDS2017.csv
 CIC-ToN-IoT-V2.parquet
 data/cross_val/
+data/cross_val_rebuilt/
 
 # Generated processed data and experiment artifacts
 data/processed/
