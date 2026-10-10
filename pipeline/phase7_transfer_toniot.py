@@ -1,6 +1,7 @@
 import os
 import json
 import warnings
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -17,13 +18,14 @@ from sklearn.preprocessing import QuantileTransformer
 
 warnings.filterwarnings("ignore")
 
-MODEL_PATH = "C:/Users/aksha/Documents/v2/models/xgb_model.json"
-X_PATH = "data/cross_val/X_toniot_cross.csv"
-Y_PATH = "data/cross_val/y_toniot_cross.csv"
-ATK_PATH = "data/cross_val/labels_toniot_raw.csv"
-OUT_DIR = "outputs/threshold_recalib"
+_ROOT = Path(__file__).resolve().parents[1]
+MODEL_PATH   = str(_ROOT / "models" / "xgb_model.json")
+X_PATH       = str(_ROOT / "data" / "cross_val" / "X_toniot_cross.csv")
+Y_PATH       = str(_ROOT / "data" / "cross_val" / "y_toniot_cross.csv")
+ATK_PATH     = str(_ROOT / "data" / "cross_val" / "labels_toniot_raw.csv")
+OUT_DIR      = str(_ROOT / "outputs" / "threshold_recalib")
 os.makedirs(OUT_DIR, exist_ok=True)
-RESULTS_PATH = os.path.join("results", "ton_iot_fewshot_transfer.json")
+RESULTS_PATH = str(_ROOT / "results" / "ton_iot_fewshot_transfer.json")
 os.makedirs(os.path.dirname(RESULTS_PATH), exist_ok=True)
 # Diagnostic only: target-space normalization is incompatible with frozen tree splits.
 RUN_QUANTILE_NORMALIZATION_EXPERIMENT = False

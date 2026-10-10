@@ -76,15 +76,17 @@ streamlit run dashboard/app.py
 │   ├── calibrator.pkl              # Isotonic calibrator object
 │   ├── model_meta.json             # Hyperparameters, metrics, threshold metadata
 │   └── tier_thresholds.json        # Three-tier risk thresholds (low/medium/high)
+├── archive/
+│   └── phase4b_category_classifier.py # (archived) Multi-class attack classifier
 ├── pipeline/
 │   ├── preprocess.py               # Data cleaning and train/val/test splits
 │   ├── phase2_causal_discovery.py  # Fast Causal Inference (FCI) execution
 │   ├── phase3_ace_filtering.py     # ACE proxy evaluation and feature selection
 │   ├── phase4_xgboost_scoring.py   # Model training with isotonic calibration
-│   ├── phase4b_category_classifier.py # Multi-class attack classifier
 │   ├── phase4c_baselines.py        # Benchmark against Full-Feature & MI models
 │   ├── phase4d_three_tier_scoring.py  # Risk tier assignment and coverage analysis
-│   └── phase5_shap_explainability.py  # Tree SHAP attribution & coherence plots
+│   ├── phase5_shap_explainability.py  # Tree SHAP attribution & coherence plots
+│   └── phase7_transfer_toniot.py   # ToN-IoT few-shot cross-dataset transfer
 ├── verification/
 │   ├── build_toniot_cross.py       # Prepares ToN-IoT transfer evaluation dataset
 │   ├── check_ace_binarization.py   # Validates binarization thresholds
@@ -116,11 +118,12 @@ The table below maps each table and figure from the research paper to its corres
 | Paper Item | Description | Producing Script / Command |
 |---|---|---|
 | **Table I** | CICIoT2023 Feature Summary & Preprocessing | `pipeline/preprocess.py` |
-| **Figure 4 / Table II** | FCI PAG Causal Graph & Feature Attributions | `pipeline/phase2_causal_discovery.py`, `pipeline/phase5_shap_explainability.py` |
+| **Figure 3** | ACE Proxy Bar Chart | `verification/regenerate_ace_figure.py` |
+| **Figure 4 / Table II** | FCI PAG Causal Graph & Tree SHAP Attributions | `pipeline/phase2_causal_discovery.py`, `pipeline/phase5_shap_explainability.py` |
 | **Table III** | Observational ACE Proxy Scores | `verification/recompute_ace_scores.py`, `pipeline/phase3_ace_filtering.py` |
 | **Table IV / VI** | In-Domain Model Metrics & Baseline Comparison | `pipeline/phase4_xgboost_scoring.py`, `pipeline/phase4c_baselines.py` |
 | **Table V** | Three-Tier Risk Scoring Thresholds & Coverage | `pipeline/phase4d_three_tier_scoring.py` |
-| **Table VII - X** | ToN-IoT Few-Shot Transfer & Ablation Study | `verification/build_toniot_cross.py`, `verification/transfer_reproduce.py` |
+| **Table VII - X** | ToN-IoT Few-Shot Transfer & Ablation Study | `pipeline/phase7_transfer_toniot.py`, `verification/transfer_reproduce.py` |
 | **Dashboard** | Web Interactive Operations & Risk Scoring | `streamlit run dashboard/app.py` |
 
 ---

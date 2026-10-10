@@ -32,3 +32,5 @@ outputs/
 *_backup.*
 data/causal_backup_before_decode_fix/
 *.tmp
+*.orig
+results_backup_pre_final/

@@ -1,7 +1,7 @@
 """
 CausalShield -- Full Pipeline Runner
 =====================================
-Runs Phases 2 through 5 (+ 4b/4c/4d) in sequence.
+Runs Phases 2 through 7 (excluding 4b) in sequence.
 
 Usage:
     python run_pipeline.py              # run all
@@ -16,12 +16,12 @@ PHASES = {
     2:   ("Phase 2 : FCI Causal Discovery",          "pipeline/phase2_causal_discovery.py"),
     3:   ("Phase 3 : ACE Feature Filtering",          "pipeline/phase3_ace_filtering.py"),
     4:   ("Phase 4 : XGBoost Binary Scoring",         "pipeline/phase4_xgboost_scoring.py"),
-    "4b":("Phase 4b: Attack Category Classifier",     "pipeline/phase4b_category_classifier.py"),
     "4c":("Phase 4c: Baseline Comparisons",           "pipeline/phase4c_baselines.py"),
     "4d":("Phase 4d: Three-Tier Risk Scoring",        "pipeline/phase4d_three_tier_scoring.py"),
     5:   ("Phase 5 : SHAP Explainability",            "pipeline/phase5_shap_explainability.py"),
+    7:   ("Phase 7 : ToN-IoT Transfer Evaluation",   "pipeline/phase7_transfer_toniot.py"),
 }
-ORDER = [2, 3, 4, "4b", "4c", "4d", 5]
+ORDER = [2, 3, 4, "4c", "4d", 5, 7]
 
 def run_phase(key, script_path):
     print("\n" + "=" * 65)
