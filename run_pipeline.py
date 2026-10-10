@@ -13,13 +13,13 @@ import sys, time, argparse, subprocess
 from pathlib import Path
 
 PHASES = {
-    2:   ("Phase 2 : FCI Causal Discovery",          "phase2_causal_discovery.py"),
-    3:   ("Phase 3 : ACE Feature Filtering",          "phase3_ace_filtering.py"),
-    4:   ("Phase 4 : XGBoost Binary Scoring",         "phase4_xgboost_scoring.py"),
-    "4b":("Phase 4b: Attack Category Classifier",     "phase4b_category_classifier.py"),
-    "4c":("Phase 4c: Baseline Comparisons",           "phase4c_baselines.py"),
-    "4d":("Phase 4d: Three-Tier Risk Scoring",        "phase4d_three_tier_scoring.py"),
-    5:   ("Phase 5 : SHAP Explainability",            "phase5_shap_explainability.py"),
+    2:   ("Phase 2 : FCI Causal Discovery",          "pipeline/phase2_causal_discovery.py"),
+    3:   ("Phase 3 : ACE Feature Filtering",          "pipeline/phase3_ace_filtering.py"),
+    4:   ("Phase 4 : XGBoost Binary Scoring",         "pipeline/phase4_xgboost_scoring.py"),
+    "4b":("Phase 4b: Attack Category Classifier",     "pipeline/phase4b_category_classifier.py"),
+    "4c":("Phase 4c: Baseline Comparisons",           "pipeline/phase4c_baselines.py"),
+    "4d":("Phase 4d: Three-Tier Risk Scoring",        "pipeline/phase4d_three_tier_scoring.py"),
+    5:   ("Phase 5 : SHAP Explainability",            "pipeline/phase5_shap_explainability.py"),
 }
 ORDER = [2, 3, 4, "4b", "4c", "4d", 5]
 
@@ -43,7 +43,7 @@ def main():
     args = parser.parse_args()
 
     skip = set(args.skip_phase.split(",")) if args.skip_phase else set()
-    base = Path(__file__).parent
+    base = Path(__file__).resolve().parent
 
     started = args.from_phase is None
     for key in ORDER:
@@ -65,7 +65,7 @@ def main():
 
     print("\n" + "=" * 65)
     print("  All phases complete!")
-    print(f"  Launch dashboard: streamlit run {base / 'phase6_dashboard.py'}")
+    print(f"  Launch dashboard: streamlit run {base / 'dashboard' / 'app.py'}")
     print("=" * 65)
 
 if __name__ == "__main__":

@@ -1,51 +1,58 @@
 {
   "HTTPS": {
-    "ace": 0.84115,
-    "abs_ace": 0.84115,
-    "method": "naive",
+    "ace": -0.37515204,
+    "abs_ace": 0.37515204,
+    "method": "observational_proxy",
     "confounders": [],
-    "median_split": 0.0
+    "median_split": 0.0,
+    "binarization": "x > 0"
   },
   "ack_flag_number": {
-    "ace": 0.84115,
-    "abs_ace": 0.84115,
-    "method": "naive",
+    "ace": -0.31593641,
+    "abs_ace": 0.31593641,
+    "method": "observational_proxy",
     "confounders": [],
-    "median_split": 0.0
+    "median_split": 0.0,
+    "binarization": "x > 0"
   },
   "psh_flag_number": {
-    "ace": 0.84115,
-    "abs_ace": 0.84115,
-    "method": "naive",
+    "ace": 0.09362934,
+    "abs_ace": 0.09362934,
+    "method": "observational_proxy",
     "confounders": [],
-    "median_split": 0.0
+    "median_split": 0.0,
+    "binarization": "x > 0"
   },
   "rst_flag_number": {
-    "ace": 0.84115,
-    "abs_ace": 0.84115,
-    "method": "naive",
+    "ace": 0.16656181,
+    "abs_ace": 0.16656181,
+    "method": "observational_proxy",
     "confounders": [],
-    "median_split": 0.0
+    "median_split": 0.0,
+    "binarization": "x > 0"
   },
   "rst_count": {
-    "ace": -0.312171,
-    "abs_ace": 0.312171,
-    "method": "naive",
+    "ace": -0.26600063,
+    "abs_ace": 0.26600063,
+    "method": "observational_proxy",
     "confounders": [],
-    "median_split": 0.5
+    "median_split": 0.5,
+    "binarization": "x > 0"
   },
   "Variance": {
-    "ace": -0.284213,
-    "abs_ace": 0.284213,
-    "method": "naive",
+    "ace": -0.28421267,
+    "abs_ace": 0.28421267,
+    "method": "observational_proxy",
     "confounders": [],
-    "median_split": 0.26
+    "median_split": 0.26,
+    "binarization": "x >= median"
   },
   "Duration": {
-    "ace": -0.043041,
-    "abs_ace": 0.043041,
-    "method": "naive",
+    "ace": -0.04304069,
+    "abs_ace": 0.04304069,
+    "method": "observational_proxy",
     "confounders": [],
-    "median_split": 64.0
+    "median_split": 64.0,
+    "binarization": "x >= median"
   }
 }

@@ -3,7 +3,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-ROOT = Path(__file__).parent
+ROOT = Path(__file__).resolve().parents[1]
 REBUILT_DIR = ROOT / "data" / "cross_val_rebuilt"
 EXISTING_DIR = ROOT / "data" / "cross_val"
 PARQUET_PATH = ROOT / "CIC-ToN-IoT-V2.parquet"

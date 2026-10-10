@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 import numpy as np
@@ -12,11 +13,12 @@ from sklearn.metrics import (
 )
 from sklearn.model_selection import train_test_split
 
-ROOT = Path(__file__).parent
+ROOT = Path(__file__).resolve().parents[1]
 MODEL_PATH = ROOT / "models" / "xgb_model.json"
 DATA_DIR = ROOT / "data" / "cross_val"
 OUT_DIR = ROOT / "results" / "transfer_repro"
 OUT_PATH = OUT_DIR / "transfer_reproduction.txt"
+JSON_OUT_PATH = OUT_DIR / "transfer_repro.json"
 
 
 def compute_threshold_metrics(y_true, scores, threshold):
@@ -72,7 +74,6 @@ def per_attack_metrics(scores, labels, attack_labels, threshold):
     rows = []
     for attack_type in sorted(set(attack_labels)):
         mask = attack_labels == attack_type
-        y_group = labels[mask]
         scores_group = scores[mask]
         predictions = (scores_group >= threshold).astype(int)
         n_flows = int(mask.sum())
@@ -87,11 +88,15 @@ def per_attack_metrics(scores, labels, attack_labels, threshold):
             
         paper_f1 = float((2 * rate) / (1 + rate)) if (1 + rate) > 0 else 0.0
         rows.append({
+            "name": str(attack_type),
             "attack_type": str(attack_type),
+            "n": n_flows,
             "n_flows": n_flows,
             "metric_name": metric_name,
             "rate": rate,
+            "recall_or_specificity": rate,
             "paper_f1": paper_f1,
+            "paper_style_2r_over_1_plus_r": paper_f1,
         })
     return rows
 
@@ -122,22 +127,36 @@ X_cal, X_eval, y_cal, y_eval, attack_cal, attack_eval = train_test_split(
 def evaluate_condition(label, X_cal_condition, X_eval_condition):
     raw_cal_scores = model.predict_proba(X_cal_condition)[:, 1]
     raw_eval_scores = model.predict_proba(X_eval_condition)[:, 1]
-    raw_cal_auc = roc_auc_score(y_cal, raw_cal_scores)
-    polarity_reflected = raw_cal_auc < 0.5
+    raw_cal_auc = float(roc_auc_score(y_cal, raw_cal_scores))
+    polarity_reflected = bool(raw_cal_auc < 0.5)
     cal_scores = 1.0 - raw_cal_scores if polarity_reflected else raw_cal_scores
     eval_scores = 1.0 - raw_eval_scores if polarity_reflected else raw_eval_scores
     tau_star, _ = find_tau_star(cal_scores, y_cal)
     enterprise_tau, _, = find_tau_fpr05(cal_scores, y_cal)
     tau_metrics = compute_threshold_metrics(y_eval, eval_scores, tau_star)
     enterprise_metrics = compute_threshold_metrics(y_eval, eval_scores, enterprise_tau)
+    raw_auc = float(roc_auc_score(y_eval, raw_eval_scores))
+    reflected_auc = float(roc_auc_score(y_eval, eval_scores))
+    pr_auc = float(average_precision_score(y_eval, eval_scores))
+
     emit(f"[{label}]")
     emit(f"n_cal={len(y_cal)} n_heldout={len(y_eval)} polarity_from_calibration_labels={polarity_reflected}")
-    emit(f"raw_roc_auc={roc_auc_score(y_eval, raw_eval_scores):.8f}")
-    emit(f"reflected_roc_auc={roc_auc_score(y_eval, eval_scores):.8f}")
-    emit(f"heldout_pr_auc={average_precision_score(y_eval, eval_scores):.8f}")
+    emit(f"raw_roc_auc={raw_auc:.8f}")
+    emit(f"reflected_roc_auc={reflected_auc:.8f}")
+    emit(f"heldout_pr_auc={pr_auc:.8f}")
     emit(f"tau_star={tau_star:.8f} attack_f1={tau_metrics['attack_f1']:.8f} benign_f1={tau_metrics['benign_f1']:.8f} macro_f1={tau_metrics['macro_f1']:.8f} fpr={tau_metrics['fpr']:.8f}")
     emit(f"enterprise_threshold={enterprise_tau:.8f} attack_f1={enterprise_metrics['attack_f1']:.8f} benign_f1={enterprise_metrics['benign_f1']:.8f} macro_f1={enterprise_metrics['macro_f1']:.8f} fpr={enterprise_metrics['fpr']:.8f}")
-    return eval_scores, tau_star
+    
+    dict_res = {
+        "raw_auc": raw_auc,
+        "reflected_auc": reflected_auc,
+        "pr_auc": pr_auc,
+        "tau_star": float(tau_star),
+        "tau_star_metrics": tau_metrics,
+        "enterprise_tau": float(enterprise_tau),
+        "enterprise_metrics": enterprise_metrics,
+    }
+    return eval_scores, tau_star, dict_res
 
 
 emit(f"n_total={len(y)} n_cal={len(y_cal)} n_heldout={len(y_eval)}")
@@ -156,8 +175,11 @@ for frame in conditions["https_duration_variance_nan"]:
 
 # XGBoost routes NaN values through the learned default branch.
 condition_results = {}
+json_conditions = {}
 for label, (X_cal_condition, X_eval_condition) in conditions.items():
-    condition_results[label] = evaluate_condition(label, X_cal_condition, X_eval_condition)
+    eval_scores, tau_star, dict_res = evaluate_condition(label, X_cal_condition, X_eval_condition)
+    condition_results[label] = (eval_scores, tau_star)
+    json_conditions[label] = dict_res
 
 as_is_scores, as_is_tau_star = condition_results["as_is"]
 emit(f"[Table X per-attack-category metrics on held-out split; predictions thresholded at tau_star={as_is_tau_star:.8f}]")
@@ -165,7 +187,8 @@ emit(f"Held-out label totals: Benign={(y_eval == 0).sum()}, Attack={(y_eval == 1
 n_sum = sum((attack_eval == at).sum() for at in sorted(set(attack_eval)))
 emit(f"Per-category n sum: {n_sum} (equals n_heldout: {n_sum == len(y_eval)})")
 
-for item in per_attack_metrics(as_is_scores, y_eval, attack_eval, as_is_tau_star):
+per_cat_list = per_attack_metrics(as_is_scores, y_eval, attack_eval, as_is_tau_star)
+for item in per_cat_list:
     emit(
         f"{item['attack_type']}: n={item['n_flows']} "
         f"{item['metric_name']}={item['rate']:.8f} "
@@ -175,3 +198,15 @@ for item in per_attack_metrics(as_is_scores, y_eval, attack_eval, as_is_tau_star
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 OUT_PATH.write_text("\n".join(lines) + "\n", encoding="utf-8")
 print(f"wrote={OUT_PATH}")
+
+json_data = {
+    "n_total": int(len(y)),
+    "n_cal": int(len(y_cal)),
+    "n_heldout": int(len(y_eval)),
+    "conditions": json_conditions,
+    "per_category": per_cat_list,
+}
+with open(JSON_OUT_PATH, "w", encoding="utf-8") as f:
+    json.dump(json_data, f, indent=2)
+print(f"wrote={JSON_OUT_PATH}")
+
