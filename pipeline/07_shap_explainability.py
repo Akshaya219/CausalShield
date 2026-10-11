@@ -90,8 +90,9 @@ except Exception as patch_err:
 with open(MODEL_DIR / "calibrator.pkl", "rb") as f:
     calibrator = pickle.load(f)
 
-X_test = pd.read_csv(PROCESSED_DIR / "X_test_causal.csv")[selected]
-y_test = pd.read_csv(PROCESSED_DIR / "y_test.csv").squeeze().values
+TEST_DIR = Path("data/test") if (Path("data/test") / "X_test_causal.csv").exists() else PROCESSED_DIR
+X_test = pd.read_csv(TEST_DIR / "X_test_causal.csv")[selected]
+y_test = pd.read_csv(TEST_DIR / "y_test.csv").squeeze().values
 
 threshold = meta["threshold"]
 

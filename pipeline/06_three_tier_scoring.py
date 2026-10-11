@@ -48,10 +48,13 @@ booster.load_model(str(MODEL_DIR / "xgb_model.json"))
 with open(MODEL_DIR / "calibrator.pkl", "rb") as f:
     cal = pickle.load(f)
 
-X_val  = pd.read_csv(PROCESSED_DIR / "X_val_causal.csv")[selected]
-y_val  = pd.read_csv(PROCESSED_DIR / "y_val.csv").squeeze().values
-X_test = pd.read_csv(PROCESSED_DIR / "X_test_causal.csv")[selected]
-y_test = pd.read_csv(PROCESSED_DIR / "y_test.csv").squeeze().values
+TRAIN_DIR = Path("data/train") if (Path("data/train") / "X_val_causal.csv").exists() else PROCESSED_DIR
+TEST_DIR  = Path("data/test") if (Path("data/test") / "X_test_causal.csv").exists() else PROCESSED_DIR
+
+X_val  = pd.read_csv(TRAIN_DIR / "X_val_causal.csv")[selected]
+y_val  = pd.read_csv(TRAIN_DIR / "y_val.csv").squeeze().values
+X_test = pd.read_csv(TEST_DIR / "X_test_causal.csv")[selected]
+y_test = pd.read_csv(TEST_DIR / "y_test.csv").squeeze().values
 
 dval  = xgb.DMatrix(X_val,  feature_names=selected)
 dtest = xgb.DMatrix(X_test, feature_names=selected)

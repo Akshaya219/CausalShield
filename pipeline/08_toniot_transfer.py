@@ -20,9 +20,10 @@ warnings.filterwarnings("ignore")
 
 _ROOT = Path(__file__).resolve().parents[1]
 MODEL_PATH   = str(_ROOT / "models" / "xgb_model.json")
-X_PATH       = str(_ROOT / "data" / "cross_val" / "X_toniot_cross.csv")
-Y_PATH       = str(_ROOT / "data" / "cross_val" / "y_toniot_cross.csv")
-ATK_PATH     = str(_ROOT / "data" / "cross_val" / "labels_toniot_raw.csv")
+_TONIOT_DIR = (_ROOT / "data" / "test" / "toniot") if (_ROOT / "data" / "test" / "toniot" / "X_toniot_cross.csv").exists() else (_ROOT / "data" / "cross_val")
+X_PATH       = str(_TONIOT_DIR / "X_toniot_cross.csv")
+Y_PATH       = str(_TONIOT_DIR / "y_toniot_cross.csv")
+ATK_PATH     = str(_TONIOT_DIR / "labels_toniot_raw.csv")
 OUT_DIR      = str(_ROOT / "outputs" / "threshold_recalib")
 os.makedirs(OUT_DIR, exist_ok=True)
 RESULTS_PATH = str(_ROOT / "results" / "ton_iot_fewshot_transfer.json")

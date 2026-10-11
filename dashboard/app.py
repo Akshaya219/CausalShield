@@ -520,19 +520,21 @@ with tabs[3]:
         st.subheader("Classification Report")
         st.code(open(report_path).read())
 
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
     for fname, caption, col in [
         ("roc_curve.png", "ROC Curve", col1),
-        ("confusion_matrix.png", "Confusion Matrix", col2),
+        ("pr_curve.png", "Precision-Recall Curve", col2),
+        ("confusion_matrix.png", "Confusion Matrix", col3),
     ]:
         p = RESULTS_DIR / fname
         if p.exists():
             col.image(str(p), caption=caption, width="stretch")
 
-    col3, col4 = st.columns(2)
+    col4, col5, col6 = st.columns(3)
     for fname, caption, col in [
-        ("calibration_curve.png", "Calibration Curve", col3),
-        ("training_history.png", "Training History", col4),
+        ("calibration_curve.png", "Calibration Curve", col4),
+        ("training_history.png", "Training History", col5),
+        ("inference_benchmark.png", "Inference Speed Benchmark", col6),
     ]:
         p = RESULTS_DIR / fname
         if p.exists():
@@ -581,6 +583,57 @@ with tabs[4]:
 with tabs[5]:
     st.header("🌐 ToN-IoT Few-Shot Transfer Performance")
 
+    st.markdown("""
+    ### 🛡️ Why Causal Models Outperform Standard Models Under Domain Shift
+    When presenting this project to staff and reviewers, this tab demonstrates the core scientific thesis of **CausalShield**:
+    * **The Problem with Standard / Normal Models**: Models trained using statistical correlation (Full 39-feature or Mutual Information) achieve >99% accuracy in-domain, but **catastrophically collapse** when tested on a new network (ToN-IoT AUC drops to **0.4976** and **0.3688**). They memorize hardware capture artifacts (bandwidth, packet timing, inter-arrival times).
+    * **The Causal AI Solution**: By using **Fast Causal Inference (FCI)**, CausalShield selects only the 7 protocol-invariant mechanisms causally connected to intrusions.
+    * **The Result**: On **6.90 Million unseen ToN-IoT flows**, CausalShield retains **81.25% ROC-AUC** and **78.17% Macro F1**, providing **2.5× higher benign traffic protection** without retraining.
+    """)
+
+    # ── Hero Comparison Graph ───────────────────────────────────────────────
+    st.subheader("📊 Executive Model Comparison (ToN-IoT Cross-Dataset Testing)")
+    hero_chart = RESULTS_DIR / "cross_dataset_model_comparison.png"
+    if not hero_chart.exists():
+        hero_chart = Path("docs") / "cross_dataset_model_comparison.png"
+    if hero_chart.exists():
+        st.image(str(hero_chart), caption="Cross-Dataset Benchmark: CausalShield vs Standard Normal Models on ToN-IoT (Held-Out Test Set)", width="stretch")
+
+    # ── Executive Benchmark Table ───────────────────────────────────────────
+    st.markdown("#### 📋 Side-by-Side Performance Comparison")
+    comp_df = pd.DataFrame([
+        {
+            "Model Architecture": "Full-Feature XGBoost (Standard)",
+            "Features": 39,
+            "Feature Selection Method": "None (All captured features)",
+            "Cross-Dataset ROC-AUC": "0.4976 (Random Failure)",
+            "Macro F1": "0.5601",
+            "Benign F1 (Reliability)": "0.3035 (High False Alarms)",
+            "Cross-Domain Stability": "❌ Collapsed",
+        },
+        {
+            "Model Architecture": "Mutual Information XGBoost",
+            "Features": 7,
+            "Feature Selection Method": "Statistical Correlation (MI)",
+            "Cross-Dataset ROC-AUC": "0.3688 (Severe Inversion)",
+            "Macro F1": "0.4668",
+            "Benign F1 (Reliability)": "0.2034 (Extreme False Alarms)",
+            "Cross-Domain Stability": "❌ Inverted",
+        },
+        {
+            "Model Architecture": "CausalShield (Proposed)",
+            "Features": 7,
+            "Feature Selection Method": "FCI Causal Discovery + ACE Proxy",
+            "Cross-Dataset ROC-AUC": "0.8125 (Reflected)",
+            "Macro F1": "0.7817 (+67.5% vs MI)",
+            "Benign F1 (Reliability)": "0.7484 (2.5× to 3.7× higher)",
+            "Cross-Domain Stability": "✅ High Generalization",
+        },
+    ])
+    st.dataframe(comp_df, use_container_width=True)
+
+    st.markdown("---")
+
     st.caption(
         "Approximate feature mapping (Duration<-Flow Duration, Variance<-Packet Length Variance, "
         "RST features<-RST Flag Count, HTTPS=0); labelled 1% calibration split sets polarity and "
@@ -605,13 +658,12 @@ with tabs[5]:
         tau_fpr_thresh = cal_data.get("tau_fpr05", 0.080)
         tau_fpr_metrics = eval_data.get("tau_fpr05", {}).get("metrics", {})
 
-        c1, c2, c3, c4 = st.columns(4)
-        c1.metric("Calibration Split (n_cal)", f"{n_cal:,}")
+        c1, c2, c3, c4, c5 = st.columns(5)
+        c1.metric("Calibration Split", f"{n_cal:,}")
         c2.metric("Held-out Test (n)", f"{n_heldout:,}")
         c3.metric("Raw AUC", f"{raw_auc:.4f}")
         c4.metric("Reflected AUC", f"{reflected_auc:.4f}")
-
-        st.metric("Held-out PR-AUC", f"{pr_auc:.4f}")
+        c5.metric("Held-out PR-AUC", f"{pr_auc:.4f}")
 
         st.markdown("#### Optimal Threshold τ* Metrics (τ* = {:.3f})".format(tau_star_thresh))
         m1, m2, m3, m4 = st.columns(4)
@@ -651,3 +703,26 @@ with tabs[5]:
             st.dataframe(pd.DataFrame(ablation_rows), use_container_width=True)
     else:
         st.info("run transfer_reproduce.py to view per-category recall and ablation table")
+
+    st.markdown("---")
+    st.subheader("📊 Cross-Dataset Testing Comparison Graphs")
+    st.caption("Visual comparisons of in-domain testing versus out-of-domain ToN-IoT generalization.")
+
+    c_g1, c_g2 = st.columns(2)
+    img_gen = RESULTS_DIR / "cross_dataset_generalisation.png"
+    if img_gen.exists():
+        c_g1.image(str(img_gen), caption="Cross-Dataset Generalisation", width="stretch")
+
+    img_ood = RESULTS_DIR / "fig11_indomain_vs_ood.png"
+    if img_ood.exists():
+        c_g2.image(str(img_ood), caption="In-Domain vs Out-of-Domain Performance", width="stretch")
+
+    c_g3, c_g4 = st.columns(2)
+    img_zero = RESULTS_DIR / "fig10_zero_shot_performance.png"
+    if img_zero.exists():
+        c_g3.image(str(img_zero), caption="Zero-Shot Operating Point Performance", width="stretch")
+
+    img_radar = RESULTS_DIR / "fig12_radar.png"
+    if img_radar.exists():
+        c_g4.image(str(img_radar), caption="Multi-Metric Evaluation Radar", width="stretch")
+

@@ -15,7 +15,7 @@ from sklearn.model_selection import train_test_split
 
 ROOT = Path(__file__).resolve().parents[1]
 MODEL_PATH = ROOT / "models" / "xgb_model.json"
-DATA_DIR = ROOT / "data" / "cross_val"
+DATA_DIR = (ROOT / "data" / "test" / "toniot") if (ROOT / "data" / "test" / "toniot" / "X_toniot_cross.csv").exists() else (ROOT / "data" / "cross_val")
 OUT_DIR = ROOT / "results" / "transfer_repro"
 OUT_PATH = OUT_DIR / "transfer_reproduction.txt"
 JSON_OUT_PATH = OUT_DIR / "transfer_repro.json"

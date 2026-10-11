@@ -245,7 +245,12 @@ for split_name, X_split in [("train", X_train), ("val", X_val), ("test", X_test)
     X_out = X_split[selected].copy()
     out_path = PROCESSED_DIR / f"X_{split_name}_causal.csv"
     X_out.to_csv(out_path, index=False)
-    print(f"      X_{split_name}_causal.csv  → {out_path}  {X_out.shape}")
+    
+    # Save to dedicated train/test folders
+    target_split_dir = Path("data/train") if split_name in ["train", "val"] else Path("data/test")
+    target_split_dir.mkdir(parents=True, exist_ok=True)
+    X_out.to_csv(target_split_dir / f"X_{split_name}_causal.csv", index=False)
+    print(f"      X_{split_name}_causal.csv  → {out_path} and {target_split_dir} {X_out.shape}")
 
 # ── Visualisation ─────────────────────────────────────────────────────────────
 try:

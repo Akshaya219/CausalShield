@@ -13,15 +13,23 @@ import sys, time, argparse, subprocess
 from pathlib import Path
 
 PHASES = {
-    2:   ("Phase 2 : FCI Causal Discovery",          "pipeline/phase2_causal_discovery.py"),
-    3:   ("Phase 3 : ACE Feature Filtering",          "pipeline/phase3_ace_filtering.py"),
-    4:   ("Phase 4 : XGBoost Binary Scoring",         "pipeline/phase4_xgboost_scoring.py"),
-    "4c":("Phase 4c: Baseline Comparisons",           "pipeline/phase4c_baselines.py"),
-    "4d":("Phase 4d: Three-Tier Risk Scoring",        "pipeline/phase4d_three_tier_scoring.py"),
-    5:   ("Phase 5 : SHAP Explainability",            "pipeline/phase5_shap_explainability.py"),
-    7:   ("Phase 7 : ToN-IoT Transfer Evaluation",   "pipeline/phase7_transfer_toniot.py"),
+    1:   ("Step 1 : Preprocessing & Splits",          "pipeline/01_preprocess.py"),
+    2:   ("Step 2 : FCI Causal Discovery",            "pipeline/02_causal_discovery.py"),
+    3:   ("Step 3 : ACE Feature Filtering",           "pipeline/03_ace_filtering.py"),
+    4:   ("Step 4 : XGBoost Binary Scoring",          "pipeline/04_xgboost_training.py"),
+    5:   ("Step 5 : Baseline Comparisons",            "pipeline/05_baseline_comparisons.py"),
+    6:   ("Step 6 : Three-Tier Risk Scoring",         "pipeline/06_three_tier_scoring.py"),
+    7:   ("Step 7 : SHAP Explainability",             "pipeline/07_shap_explainability.py"),
+    8:   ("Step 8 : ToN-IoT Transfer Evaluation",     "pipeline/08_toniot_transfer.py"),
 }
-ORDER = [2, 3, 4, "4c", "4d", 5, 7]
+# Map legacy phase arguments to current steps
+ALIAS_MAP = {
+    "4c": 5, "4C": 5,
+    "4d": 6, "4D": 6,
+    "5": 7,
+    "7": 8,
+}
+ORDER = [2, 3, 4, 5, 6, 7, 8]
 
 def run_phase(key, script_path):
     print("\n" + "=" * 65)
@@ -42,17 +50,22 @@ def main():
     parser.add_argument("--skip-phase", default="")
     args = parser.parse_args()
 
-    skip = set(args.skip_phase.split(",")) if args.skip_phase else set()
+    raw_skip = [s.strip() for s in args.skip_phase.split(",") if s.strip()]
+    skip = {ALIAS_MAP.get(s, int(s) if s.isdigit() else s) for s in raw_skip}
+    from_step = args.from_phase
+    if from_step is not None:
+        from_step = ALIAS_MAP.get(from_step, int(from_step) if str(from_step).isdigit() else from_step)
+
     base = Path(__file__).resolve().parent
 
-    started = args.from_phase is None
+    started = from_step is None
     for key in ORDER:
         if not started:
-            if str(key) == str(args.from_phase):
+            if key == from_step or str(key) == str(from_step):
                 started = True
             else:
                 continue
-        if str(key) in skip:
+        if key in skip or str(key) in skip:
             print(f"\n  Skipping Phase {key}")
             continue
         script = base / PHASES[key][1]

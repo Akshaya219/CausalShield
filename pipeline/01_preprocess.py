@@ -161,17 +161,31 @@ print(f"Validation : {X_val.shape}   | Benign={(y_val==0).sum():,}   | Attack={(
 print(f"Test       : {X_test.shape}  | Benign={(y_test==0).sum():,}   | Attack={(y_test==1).sum():,}")
 
 # ── Save ──────────────────────────────────────────────────────────
-X_train.to_csv("data/processed1/X_train.csv", index=False)
-X_val.to_csv(  "data/processed1/X_val.csv",   index=False)
-X_test.to_csv( "data/processed1/X_test.csv",  index=False)
+for target_dir in ["data/train", "data/test", "data/processed"]:
+    os.makedirs(target_dir, exist_ok=True)
 
-pd.Series(y_train).to_csv("data/processed1/y_train.csv", index=False)
-pd.Series(y_val).to_csv(  "data/processed1/y_val.csv",   index=False)
-pd.Series(y_test).to_csv( "data/processed1/y_test.csv",  index=False)
+# Training & validation splits
+X_train.to_csv("data/train/X_train.csv", index=False)
+X_val.to_csv(  "data/train/X_val.csv",   index=False)
+pd.Series(y_train).to_csv("data/train/y_train.csv", index=False)
+pd.Series(y_val).to_csv(  "data/train/y_val.csv",   index=False)
+pd.Series(cat_train).to_csv("data/train/cat_train.csv", index=False)
+pd.Series(cat_val).to_csv(  "data/train/cat_val.csv",   index=False)
 
-# Save category labels separately — for IRM environments later
-pd.Series(cat_train).to_csv("data/processed1/cat_train.csv", index=False)
-pd.Series(cat_val).to_csv(  "data/processed1/cat_val.csv",   index=False)
-pd.Series(cat_test).to_csv( "data/processed1/cat_test.csv",  index=False)
+# Testing splits
+X_test.to_csv( "data/test/X_test.csv",  index=False)
+pd.Series(y_test).to_csv( "data/test/y_test.csv",  index=False)
+pd.Series(cat_test).to_csv( "data/test/cat_test.csv",  index=False)
+pd.Series(final_cols).to_csv("data/test/feature_names.csv", index=False)
 
-pd.Series(final_cols).to_csv("data/processed1/feature_names.csv", index=False)
+# Processed backwards-compatibility
+X_train.to_csv("data/processed/X_train.csv", index=False)
+X_val.to_csv(  "data/processed/X_val.csv",   index=False)
+X_test.to_csv( "data/processed/X_test.csv",  index=False)
+pd.Series(y_train).to_csv("data/processed/y_train.csv", index=False)
+pd.Series(y_val).to_csv(  "data/processed/y_val.csv",   index=False)
+pd.Series(y_test).to_csv( "data/processed/y_test.csv",  index=False)
+pd.Series(cat_train).to_csv("data/processed/cat_train.csv", index=False)
+pd.Series(cat_val).to_csv(  "data/processed/cat_val.csv",   index=False)
+pd.Series(cat_test).to_csv( "data/processed/cat_test.csv",  index=False)
+pd.Series(final_cols).to_csv("data/processed/feature_names.csv", index=False)

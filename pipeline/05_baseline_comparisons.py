@@ -39,13 +39,16 @@ print("=" * 60)
 # ── Load full data ─────────────────────────────────────────────────────────────
 print("\n[1/5] Loading data ...")
 
-X_train_full = pd.read_csv(PROCESSED_DIR / "X_train.csv")
-X_val_full   = pd.read_csv(PROCESSED_DIR / "X_val.csv")
-X_test_full  = pd.read_csv(PROCESSED_DIR / "X_test.csv")
+TRAIN_DIR = Path("data/train") if (Path("data/train") / "X_train.csv").exists() else PROCESSED_DIR
+TEST_DIR  = Path("data/test") if (Path("data/test") / "X_test.csv").exists() else PROCESSED_DIR
 
-y_train = pd.read_csv(PROCESSED_DIR / "y_train.csv").squeeze().values
-y_val   = pd.read_csv(PROCESSED_DIR / "y_val.csv").squeeze().values
-y_test  = pd.read_csv(PROCESSED_DIR / "y_test.csv").squeeze().values
+X_train_full = pd.read_csv(TRAIN_DIR / "X_train.csv")
+X_val_full   = pd.read_csv(TRAIN_DIR / "X_val.csv")
+X_test_full  = pd.read_csv(TEST_DIR / "X_test.csv")
+
+y_train = pd.read_csv(TRAIN_DIR / "y_train.csv").squeeze().values
+y_val   = pd.read_csv(TRAIN_DIR / "y_val.csv").squeeze().values
+y_test  = pd.read_csv(TEST_DIR / "y_test.csv").squeeze().values
 
 selected_causal = json.load(open(CAUSAL_DIR / "selected_features.json"))
 

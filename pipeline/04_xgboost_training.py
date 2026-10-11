@@ -61,19 +61,21 @@ from sklearn.metrics import (
 )
 from sklearn.model_selection import StratifiedKFold
 from calibration_utils import NumpyIsotonicRegression as IsotonicRegression
-from calibration_utils import calibration_curve
 
 selected = json.load(open(CAUSAL_DIR / "selected_features.json"))
 print(f"      Selected features : {len(selected)}  →  {selected}")
 
-X_train = pd.read_csv(PROCESSED_DIR / "X_train_causal.csv")
-y_train = pd.read_csv(PROCESSED_DIR / "y_train.csv").squeeze().values
+TRAIN_DIR = Path("data/train") if (Path("data/train") / "X_train_causal.csv").exists() else PROCESSED_DIR
+TEST_DIR  = Path("data/test") if (Path("data/test") / "X_test_causal.csv").exists() else PROCESSED_DIR
 
-X_val   = pd.read_csv(PROCESSED_DIR / "X_val_causal.csv")
-y_val   = pd.read_csv(PROCESSED_DIR / "y_val.csv").squeeze().values
+X_train = pd.read_csv(TRAIN_DIR / "X_train_causal.csv")
+y_train = pd.read_csv(TRAIN_DIR / "y_train.csv").squeeze().values
 
-X_test  = pd.read_csv(PROCESSED_DIR / "X_test_causal.csv")
-y_test  = pd.read_csv(PROCESSED_DIR / "y_test.csv").squeeze().values
+X_val   = pd.read_csv(TRAIN_DIR / "X_val_causal.csv")
+y_val   = pd.read_csv(TRAIN_DIR / "y_val.csv").squeeze().values
+
+X_test  = pd.read_csv(TEST_DIR / "X_test_causal.csv")
+y_test  = pd.read_csv(TEST_DIR / "y_test.csv").squeeze().values
 
 # Align columns to selected feature list (zero-fill any missing)
 for df in [X_train, X_val, X_test]:

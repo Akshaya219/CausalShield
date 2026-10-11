@@ -1,6 +1,11 @@
 import json
 import pickle
+import sys
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 import numpy as np
 import pandas as pd
@@ -13,12 +18,13 @@ from sklearn.metrics import (
 )
 
 PROCESSED_DIR = Path("data/processed")
+TEST_DIR = Path("data/test") if (Path("data/test") / "X_test_causal.csv").exists() else PROCESSED_DIR
 CAUSAL_DIR = Path("data/causal")
 MODEL_DIR = Path("models")
 
 selected = json.load(open(CAUSAL_DIR / "selected_features.json"))
-X_test = pd.read_csv(PROCESSED_DIR / "X_test_causal.csv")
-y_test = pd.read_csv(PROCESSED_DIR / "y_test.csv").squeeze().values
+X_test = pd.read_csv(TEST_DIR / "X_test_causal.csv")
+y_test = pd.read_csv(TEST_DIR / "y_test.csv").squeeze().values
 
 for col in selected:
     if col not in X_test.columns:

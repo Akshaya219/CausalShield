@@ -23,6 +23,8 @@ data/cross_val_rebuilt/
 # Generated processed data and experiment artifacts
 data/processed/
 data/processed1/
+data/train/
+data/test/
 models/
 results/
 outputs/
