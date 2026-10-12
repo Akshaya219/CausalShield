@@ -50,7 +50,7 @@ category_map = {
     'BenignTraffic'           : 'Benign'
 }
 
-# These 8 features are always kept — final CSVs will have ONLY these columns
+# These 7 features are always kept — final CSVs will have ONLY these columns
 REQUIRED_FEATURES = [
     'HTTPS', 'ack_flag_number', 'psh_flag_number', 'rst_flag_number',
     'rst_count', 'Variance', 'Duration'

@@ -32,10 +32,15 @@ st.set_page_config(
 )
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
+import sys
+
 try:
     BASE = Path(__file__).resolve().parents[1]
 except NameError:
     BASE = Path.cwd()
+
+if str(BASE) not in sys.path:
+    sys.path.insert(0, str(BASE))
 
 CAUSAL_DIR = BASE / "data" / "causal"
 MODEL_DIR = BASE / "models"
@@ -723,6 +728,8 @@ with tabs[5]:
         c_g3.image(str(img_zero), caption="Zero-Shot Operating Point Performance", width="stretch")
 
     img_radar = RESULTS_DIR / "fig12_radar.png"
+    if not img_radar.exists():
+        img_radar = Path("docs") / "fig12_radar.png"
     if img_radar.exists():
         c_g4.image(str(img_radar), caption="Multi-Metric Evaluation Radar", width="stretch")
 
