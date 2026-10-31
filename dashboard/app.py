@@ -943,63 +943,6 @@ with tabs[6]:
     st.caption("Gold-shaded features appear in **both** selection methods. "
                "Scores are normalised to [0, 1] for visual comparison.")
 
-    # ── Venn diagram (matplotlib_venn if available, else text) ────────────────
-    st.markdown("---")
-    st.subheader("🔘 Venn Diagram — Feature Set Overlap")
-
-    try:
-        from matplotlib_venn import venn2
-        fig_venn, ax_venn = plt.subplots(figsize=(7, 5))
-        v = venn2(
-            [causal_features, mi_features],
-            set_labels=("CausalShield\n(FCI + ACE)", "Traditional\n(MI-Selected)"),
-            ax=ax_venn,
-        )
-        # Annotate subsets with feature names
-        causal_only_str = "\n".join(sorted(causal_only))
-        overlap_str = "\n".join(sorted(overlap))
-        mi_only_str = "\n".join(sorted(mi_only))
-        if v.get_label_by_id("10"):
-            v.get_label_by_id("10").set_text(causal_only_str)
-            v.get_label_by_id("10").set_fontsize(8)
-        if v.get_label_by_id("11"):
-            v.get_label_by_id("11").set_text(overlap_str)
-            v.get_label_by_id("11").set_fontsize(8)
-        if v.get_label_by_id("01"):
-            v.get_label_by_id("01").set_text(mi_only_str)
-            v.get_label_by_id("01").set_fontsize(8)
-
-        # Colour patches
-        if v.get_patch_by_id("10"):
-            v.get_patch_by_id("10").set_color("#2ecc71")
-            v.get_patch_by_id("10").set_alpha(0.45)
-        if v.get_patch_by_id("01"):
-            v.get_patch_by_id("01").set_color("#3498db")
-            v.get_patch_by_id("01").set_alpha(0.45)
-        if v.get_patch_by_id("11"):
-            v.get_patch_by_id("11").set_color("#f1c40f")
-            v.get_patch_by_id("11").set_alpha(0.55)
-
-        ax_venn.set_title("Feature Set Overlap: Causal vs Traditional Selection", fontweight="bold")
-        plt.tight_layout()
-        st.pyplot(fig_venn)
-    except ImportError:
-        # Fallback text-based Venn
-        st.markdown(f"""
-        ```
-        ┌──────────────────────────────────────────────────┐
-        │              CausalShield (FCI+ACE)              │
-        │  {', '.join(sorted(causal_only)):^46s}  │
-        │          ┌─────────────────────┐                 │
-        │          │      OVERLAP        │                 │
-        │          │  {', '.join(sorted(overlap)):^19s}  │
-        │          │                     │  MI-Selected    │
-        │          └─────────────────────┘                 │
-        │                    {', '.join(sorted(mi_only)):^30s}│
-        └──────────────────────────────────────────────────┘
-        ```
-        """)
-
     # ── Why the difference matters ───────────────────────────────────────────
     st.markdown("---")
     st.subheader("🧠 Why Does This Overlap Pattern Matter?")
